@@ -5,6 +5,29 @@
 #include <vector>
 using namespace std;
 
+string ano(cNo* nozim) {
+  string aux = "";
+  for (int i = 6; i <= 9;i++) {
+    aux+=nozim->getDataDeAdicao()[i];
+  }
+  return aux;
+}
+
+string mes(cNo* nozim) {
+  string aux = "";
+  for (int i = 3; i <= 4;i++) {
+    aux+=nozim->getDataDeAdicao()[i];
+  }
+  return aux;
+}
+
+string dia(cNo* nozim) {
+  string aux = "";
+  for (int i = 0; i <= 1;i++) {
+    aux+=nozim->getDataDeAdicao()[i];
+  }
+  return aux;
+}
 
 void counting(cListaDupEnc* Lista, int tamanhoEntrada, int palavraInicio, int palavraFim) {
   cNo* baldes[10]; //1
@@ -60,27 +83,41 @@ void counting(cListaDupEnc* Lista, int tamanhoEntrada, int palavraInicio, int pa
   }
 }
 
-void radix(cListaDupEnc* Lista, int tamanhoEntrada) {
-  counting(Lista, tamanhoEntrada, 7, 10);
+
+
+void split(cListaDupEnc* Lista, int tamanhoEntrada) {
+  cNo* aux = Lista->getInicio();
+  vector <cNo*> vetor;
+  vetor.push_back(aux);
+  aux = aux->getProx();
+
+  while(aux != NULL) {
+    if(ano(vetor[vetor.size() - 1]) != ano(aux)) {
+      vetor.push_back(aux);
+    }
+    aux = aux->getProx();
+  }
+
+  for (int i = 0; i < vetor.size();i++) {
+    cout <<vetor[i]->getDataDeAdicao()<<endl;
+  }
+
 }
+
+
+
 
 int main() {
   cListaDupEnc MinhaLista;
   for (int i = 0; i < 10;i++) {
     MinhaLista.InsereElemFim(gerarNomeArtista(i), gerarNomeAlbum(i), gerarGenero(), gerarAno(), gerarNomeMusica(i), gerarDuracao(), gerarClassificacao(), gerarReproducoes(), gerarDataAdicao(), gerarUltimaReproducao());
   }
+  counting(&MinhaLista, 10, 7,10);
   cNo* aux = MinhaLista.getInicio();
   while(aux != NULL) {
     cout << aux->getDataDeAdicao() <<endl;
     aux = aux->getProx();
   }
-  cout <<"=============="<<endl;
-  counting(&MinhaLista, 10, 4,5);
-  aux = MinhaLista.getInicio();
-  while(aux != NULL) {
-    cout << aux->getDataDeAdicao() <<endl;
-    aux = aux->getProx();
-  }
-  cout <<MinhaLista.getTamanho()<<endl;
-  cout <<"Fim :)"<<endl;
+  cout <<"=============================="<<endl;
+  split(&MinhaLista, 10);
 }
