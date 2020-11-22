@@ -6,9 +6,9 @@
 using namespace std;
 
 
-void conting(cListaDupEnc* Lista, int tamanhoEntrada, int palavraInicio, int palavraFim) {
-  cNo* baldes[10];
-  for (int digito = palavraFim - 1; digito > palavraInicio - 1; digito--) {
+void counting(cListaDupEnc* Lista, int tamanhoEntrada, int palavraInicio, int palavraFim) {
+  cNo* baldes[10]; //1
+  for (int digito = palavraFim - 1; digito >= palavraInicio - 1; digito--) {
     cNo* aux1 = Lista->getInicio();
     Lista->setInicio(NULL); 
     Lista->setFim(NULL);
@@ -60,10 +60,13 @@ void conting(cListaDupEnc* Lista, int tamanhoEntrada, int palavraInicio, int pal
   }
 }
 
+void radix(cListaDupEnc* Lista, int tamanhoEntrada) {
+  counting(Lista, tamanhoEntrada, 7, 10);
+}
 
 int main() {
   cListaDupEnc MinhaLista;
-  for (int i = 0; i < 100;i++) {
+  for (int i = 0; i < 10;i++) {
     MinhaLista.InsereElemFim(gerarNomeArtista(i), gerarNomeAlbum(i), gerarGenero(), gerarAno(), gerarNomeMusica(i), gerarDuracao(), gerarClassificacao(), gerarReproducoes(), gerarDataAdicao(), gerarUltimaReproducao());
   }
   cNo* aux = MinhaLista.getInicio();
@@ -72,7 +75,7 @@ int main() {
     aux = aux->getProx();
   }
   cout <<"=============="<<endl;
-  conting(&MinhaLista, 100, 7, 10);
+  counting(&MinhaLista, 10, 4,5);
   aux = MinhaLista.getInicio();
   while(aux != NULL) {
     cout << aux->getDataDeAdicao() <<endl;
