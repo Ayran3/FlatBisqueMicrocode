@@ -17,7 +17,7 @@ void conting(cListaDupEnc* Lista, int tamanhoEntrada, int palavraInicio, int pal
   for (int i = 0;i < 10;i++) {
     baldes[i] = NULL;
   }
-  
+
   //Preenchendo os baldes.
   for (int i = 0; i < tamanhoEntrada;i++) {
     if(baldes[aux1->getDataDeAdicao()[palavraFim - 1] - '0'] == NULL) {
@@ -77,4 +77,5 @@ int main() {
     aux = aux->getProx();
   }
   cout <<MinhaLista.getTamanho()<<endl;
+  cout <<"Fim :)"<<endl;
 }
