@@ -85,11 +85,12 @@ void counting(cListaDupEnc* Lista, int tamanhoEntrada, int palavraInicio, int pa
 
 
 
-void split(cListaDupEnc* Lista, int tamanhoEntrada) {
+void sortMesAno(cListaDupEnc* Lista, int tamanhoEntrada) {
   cNo* aux = Lista->getInicio();
   vector <cNo*> vetor;
   vector <int> index;
   vector <cListaDupEnc*> Listas;
+  int total = 0;
 
   vetor.push_back(aux);
   aux = aux->getProx();
@@ -125,23 +126,19 @@ void split(cListaDupEnc* Lista, int tamanhoEntrada) {
   }
 
   for (int i = 0; i < Listas.size();i++) {
+    total+=Listas[i]->getTamanho();
     counting(Listas[i], Listas[i]->getTamanho(), 4, 5);
   }
 
-  for (int i = 0;i < Listas.size(); i++) {
-    cout << "Listas: " << i + 1 <<endl;
-    cNo* aux35 = Listas[i]->getInicio();
-    for (int j = 0; j < Listas[i]->getTamanho();j++) {
-      cout <<"\t"<<aux35->getDataDeAdicao()<<endl;
-      aux35 = aux35->getProx();
-    }
+  cNo* inicioInit = Listas[0]->getInicio();
+  cNo* fimInit = Listas[Listas.size() - 1]->getFim();
+  for (int i = 0; i < Listas.size() - 1; i++) {
+    Listas[i]->getFim()->setProx(Listas[i + 1]->getInicio());
+    Listas[i + 1]->getInicio()->setAnte(Listas[i]->getFim());
   }
-
-
-  cout <<"=============================="<<endl;
-  for (int i = 0; i < vetor.size();i++) {
-    cout <<vetor[i]->getDataDeAdicao()<<" -> "<<index[i]<<endl;
-  }
+  Lista->setInicio(inicioInit);
+  Lista->setFim(fimInit);
+  Lista->setTamanho(total);
 }
 
 
@@ -154,11 +151,11 @@ int main() {
     MinhaLista.InsereElemFim(gerarNomeArtista(i), gerarNomeAlbum(i), gerarGenero(), gerarAno(), gerarNomeMusica(i), gerarDuracao(), gerarClassificacao(), gerarReproducoes(), gerarDataAdicao(), gerarUltimaReproducao());
   }
   counting(&MinhaLista, 100, 7,10);
+  sortMesAno(&MinhaLista, 10);
   cNo* aux = MinhaLista.getInicio();
   while(aux != NULL) {
     cout << aux->getDataDeAdicao() <<endl;
     aux = aux->getProx();
   }
-  cout <<"=============================="<<endl;
-  split(&MinhaLista, 10);
+  cout <<"Tamanho: "<<MinhaLista.getTamanho()<<endl;
 }
