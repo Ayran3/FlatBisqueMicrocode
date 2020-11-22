@@ -94,7 +94,7 @@ string gerarReproducoes(){
 string gerarDataAdicao(){
 	int dura1 = rand() % 31 + 1;
 	int dura2 = rand() % 12 + 1;
-	int dura3 = rand() % 2 + 2017;
+	int dura3 = rand() % 100 + 2017;
 	int dura4 = rand() % 24;
 	int dura5 = rand() % 6;
 	int dura6 = rand() % 10;
