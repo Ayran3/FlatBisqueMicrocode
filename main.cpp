@@ -88,31 +88,72 @@ void counting(cListaDupEnc* Lista, int tamanhoEntrada, int palavraInicio, int pa
 void split(cListaDupEnc* Lista, int tamanhoEntrada) {
   cNo* aux = Lista->getInicio();
   vector <cNo*> vetor;
+  vector <int> index;
+  vector <cListaDupEnc*> Listas;
+
   vetor.push_back(aux);
   aux = aux->getProx();
+  int cont = 1;
 
   while(aux != NULL) {
     if(ano(vetor[vetor.size() - 1]) != ano(aux)) {
       vetor.push_back(aux);
+      index.push_back(cont);
+      cont = 0;
     }
+    cont++;
     aux = aux->getProx();
   }
+  index.push_back(cont);
 
-  for (int i = 0; i < vetor.size();i++) {
-    cout <<vetor[i]->getDataDeAdicao()<<endl;
+
+  for (int i = 0; i < vetor.size(); i++) {
+    cListaDupEnc* novo = new cListaDupEnc();
+    if((vetor.size() - i) > 1) {
+      novo->setInicio(vetor[i]);
+      novo->setTamanho(index[i]);
+      novo->setFim(vetor[i + 1]->getAnte());
+      vetor[i + 1]->getAnte()->setProx(NULL);
+      Listas.push_back(novo);
+    }
+    else {
+      novo->setInicio(vetor[i]);
+      novo->setTamanho(index[i]);
+      novo->setFim(Lista->getFim());
+      Listas.push_back(novo);
+    }
   }
 
+  for (int i = 0; i < Listas.size();i++) {
+    counting(Listas[i], Listas[i]->getTamanho(), 4, 5);
+  }
+
+  for (int i = 0;i < Listas.size(); i++) {
+    cout << "Listas: " << i + 1 <<endl;
+    cNo* aux35 = Listas[i]->getInicio();
+    for (int j = 0; j < Listas[i]->getTamanho();j++) {
+      cout <<"\t"<<aux35->getDataDeAdicao()<<endl;
+      aux35 = aux35->getProx();
+    }
+  }
+
+
+  cout <<"=============================="<<endl;
+  for (int i = 0; i < vetor.size();i++) {
+    cout <<vetor[i]->getDataDeAdicao()<<" -> "<<index[i]<<endl;
+  }
 }
 
 
 
 
 int main() {
+  srand(time(NULL));
   cListaDupEnc MinhaLista;
-  for (int i = 0; i < 10;i++) {
+  for (int i = 0; i < 100;i++) {
     MinhaLista.InsereElemFim(gerarNomeArtista(i), gerarNomeAlbum(i), gerarGenero(), gerarAno(), gerarNomeMusica(i), gerarDuracao(), gerarClassificacao(), gerarReproducoes(), gerarDataAdicao(), gerarUltimaReproducao());
   }
-  counting(&MinhaLista, 10, 7,10);
+  counting(&MinhaLista, 100, 7,10);
   cNo* aux = MinhaLista.getInicio();
   while(aux != NULL) {
     cout << aux->getDataDeAdicao() <<endl;
